@@ -42,9 +42,9 @@ activityID2<-read.table("./UCI HAR Dataset/train/y_train.txt", colClasses="numer
 
 ##Join the rows and columns together of the corresponding segments
 dataset <-bind_cols(
-          bind_rows(subjects1, subjects2), 
-          bind_rows(activityID1, activityID2),
-          bind_rows(dataset1, dataset2))
+    bind_rows(subjects1, subjects2), 
+    bind_rows(activityID1, activityID2),
+    bind_rows(dataset1, dataset2))
 
 rm(dataset1, dataset2, subjects1, subjects2, activityID1, activityID2)
 
@@ -63,7 +63,7 @@ rm(columnNames)
 
 
 #select the columns containing either std or mean, and append subjects and activityID
-tidyDataset <- select(dataset, subjectID, activityID, matches("(std|mean)\\.\\.(\\.[XYZ])?$"))
+activitySensorData <- select(dataset, subjectID, activityID, matches("(std|mean)\\.\\.(\\.[XYZ])?$"))
 rm(dataset)
 
 
@@ -75,32 +75,32 @@ rm(dataset)
 lutDF <-read.table("./UCI HAR Dataset/activity_labels.txt", colClasses="character")
 lut <- setNames(tolower(lutDF$V2), lutDF$V1)
 
-tidyDataset$activityID<- as.factor(tidyDataset$activityID)     #convert to factors first
-tidyDataset$activityID <-lut[tidyDataset$activityID]           #use these factors in a lookup table to convert to meaningful descriptors
-tidyDataset<-rename(tidyDataset, activityType = activityID)    #Rename activityID into activityType
+activitySensorData$activityID<- as.factor(activitySensorData$activityID)     #convert to factors first
+activitySensorData$activityID <-lut[activitySensorData$activityID]           #use these factors in a lookup table to convert to meaningful descriptors
+activitySensorData<-rename(activitySensorData, activityType = activityID)    #Rename activityID into activityType
 rm(lutDF, lut)
 
 
 #4. Appropriately labels the data set with descriptive variable names. 
 
 #remove punctuation from column Names
-names(tidyDataset)<- gsub("[[:punct:]]","", names(tidyDataset))
+names(activitySensorData)<- gsub("[[:punct:]]","", names(activitySensorData))
 
 # - clean up some other names
-nameCol <-names(tidyDataset)
+nameCol <-names(activitySensorData)
 
 nameCol<-gsub("^t","time",nameCol)
 nameCol<-gsub("^f","freq",nameCol)
 nameCol<-gsub("[Ss]td","StdDev",nameCol)
 nameCol<-gsub("mean","Mean",nameCol)
 nameCol<-gsub("[Aa]cc","Accel",nameCol)
-names(tidyDataset)<- nameCol
+names(activitySensorData)<- nameCol
 rm(nameCol)
 
 #5. From the data set in step 4, creates a second, independent tidy data set with the 
 #   average of each variable for each activity and each subject.
 
 #do the grouping stuff using dplyr and create the second data set
-tidyDataSummary <-{group_by(tidyDataset, activityType, subjectID) %>%
+activitySensorDataSummary <-{group_by(activitySensorData, activityType, subjectID) %>%
         summarize_each(funs(mean))
 }
