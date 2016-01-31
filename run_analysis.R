@@ -9,7 +9,7 @@
 #
 #This script assumes that the contents of "UCI HAR Dataset" were downloaded, and unzipped, and that
 #
-#THE SCRIPT LINE #32 HAS TO BE MODIFIED to reflect the location of the data (i.e. where "UCCI HAR Dataset" root folder is)
+#it is present in the root folder. If it's not, modify line #32
 #
 #and is placed into the working directory. The dataset .zip file can be downloaded from
 #https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
@@ -29,7 +29,7 @@
 
 #0. Load required packages, set working directory, load data
 library(dplyr)
-setwd("C:\\Users\\Leo\\Documents\\getting-and-cleaning-data-assignment\\UCI HAR Dataset")
+#setwd("C:\\Users\\Leo\\Documents\\getting-and-cleaning-data-assignment\\UCI HAR Dataset")
 
 
 ## get required data into the program. Both for the test and train subjects
