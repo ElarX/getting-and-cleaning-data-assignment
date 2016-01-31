@@ -7,8 +7,10 @@
 
 #Notes:
 #
-#This script assumes that the contents of "UCI HAR Dataset" are unzipped into a folder named "UCI HAR Dataset"
-#and placed into the root directory 
+#This script assumes that the contents of "UCI HAR Dataset" were downloaded, and unzipped, and that
+#
+#THE SCRIPT LINE #32 HAS TO BE MODIFIED to reflect the location of the data (i.e. where "UCCI HAR Dataset" root folder is)
+#
 #and is placed into the working directory. The dataset .zip file can be downloaded from
 #https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 #
@@ -21,22 +23,23 @@
 #5. From the data set in step 4, creates a second, independent tidy data set with the 
 #   average of each variable for each activity and each subject.
 #
-#Version 1.0. Last Updated 2016-01-30
+#Version 1.0.1 Last Updated 2016-01-31
 #
 #
 
-#0. Load required packages, load data
+#0. Load required packages, set working directory, load data
 library(dplyr)
+setwd("C:\\Users\\Leo\\Documents\\getting-and-cleaning-data-assignment\\UCI HAR Dataset")
 
 
 ## get required data into the program. Both for the test and train subjects
-dataset1 <- read.table("./UCI HAR Dataset/test/X_test.txt", header=FALSE, colClasses = "numeric")
-subjects1<-read.table("./UCI HAR Dataset/test/subject_test.txt", colClasses="numeric")
-activityID1<-read.table("./UCI HAR Dataset/test/y_test.txt", colClasses="numeric")
+dataset1 <- read.table("./test/X_test.txt", header=FALSE, colClasses = "numeric")
+subjects1<-read.table("./test/subject_test.txt", colClasses="numeric")
+activityID1<-read.table("./test/y_test.txt", colClasses="numeric")
 
-dataset2 <- read.table("./UCI HAR Dataset/train/X_train.txt", header=FALSE, colClasses = "numeric")
-subjects2<-read.table("./UCI HAR Dataset/train/subject_train.txt", colClasses="numeric")
-activityID2<-read.table("./UCI HAR Dataset/train/y_train.txt", colClasses="numeric")
+dataset2 <- read.table("./train/X_train.txt", header=FALSE, colClasses = "numeric")
+subjects2<-read.table("./train/subject_train.txt", colClasses="numeric")
+activityID2<-read.table("./train/y_train.txt", colClasses="numeric")
 
 #1. Merges the training and the test sets to create one data set.
 
@@ -51,7 +54,7 @@ rm(dataset1, dataset2, subjects1, subjects2, activityID1, activityID2)
 #2. Extracts only the measurements on the mean and standard deviation for each measurement. 
 
 #read in the labels of the columns
-columnNames <-read.table("./UCI HAR Dataset/features.txt", header=FALSE)
+columnNames <-read.table("features.txt", header=FALSE)
 
 #add the leading the SubjectID and ActivityID column name
 columnNames<-c("subjectID","activityID", as.character(columnNames$V2))
@@ -72,7 +75,7 @@ rm(dataset)
 #rename activities from activityID to meaningful activity names using a lookup table
 
 #Make lookup table from activity_labels
-lutDF <-read.table("./UCI HAR Dataset/activity_labels.txt", colClasses="character")
+lutDF <-read.table("activity_labels.txt", colClasses="character")
 lut <- setNames(tolower(lutDF$V2), lutDF$V1)
 
 activitySensorData$activityID<- as.factor(activitySensorData$activityID)     #convert to factors first
