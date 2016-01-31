@@ -14,10 +14,11 @@ run_analysis.R
 ###Notes about the script
 Please ensure that you have downloaded the source data from 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
-and extracted it into a "UCI HAR Dataset" folder. 
+and extracted it into a the working directory.
 
-You MUST MODIFY LINE 32 to point to where you have extracted the data. 
-OTHERWISE, SCRIPT WILL NOT RUN properly
+If you wish to simply use the script on another directory, please modify line 32 
+
+
 
 ### Project Summary
 The following is a summary description of the project instructions
